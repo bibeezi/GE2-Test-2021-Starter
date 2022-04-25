@@ -10,6 +10,7 @@ public class FPSController : MonoBehaviour
     public float lookSpeed = 150.0f;
 
     public bool allowPitch = true;
+    public GameObject ballPrefab;
 
     public GUIStyle style;
     // Use this for initialization
@@ -77,6 +78,12 @@ public class FPSController : MonoBehaviour
         active = true;
     }
 
+    void ThrowBall() {
+        GameObject ball = Instantiate(ballPrefab, transform.position + transform.forward, transform.rotation);
+
+        ball.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -110,6 +117,10 @@ public class FPSController : MonoBehaviour
         if (allowPitch)
         {
             Pitch(-mouseY * lookSpeed * Time.deltaTime);
+        }
+
+        if(Input.GetKeyDown("space")) {
+            ThrowBall();
         }
 
         float contWalk = Input.GetAxis("Vertical");
