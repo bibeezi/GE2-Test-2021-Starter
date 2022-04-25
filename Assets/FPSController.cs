@@ -11,7 +11,8 @@ public class FPSController : MonoBehaviour
 
     public bool allowPitch = true;
     public GameObject ballPrefab;
-    public GameObject dog;
+    public StateMachine dogStateMachine;
+    public GameObject ball;
 
     public GUIStyle style;
     // Use this for initialization
@@ -24,8 +25,6 @@ public class FPSController : MonoBehaviour
             mainCamera = Camera.main.gameObject;
         }
         Invoke("Activate", 2);
-
-        dog = GameObject.Find("dog");
     }
 
     void Yaw(float angle)
@@ -82,11 +81,11 @@ public class FPSController : MonoBehaviour
     }
 
     void ThrowBall() {
-        GameObject ball = Instantiate(ballPrefab, transform.position + transform.forward, transform.rotation);
+        ball = Instantiate(ballPrefab, transform.position + transform.forward, transform.rotation);
 
         ball.GetComponent<Rigidbody>().AddForce(transform.forward * 1000);
 
-        // dog.GetComponent<StateMachine>().ChangeState(new FetchBall());
+        dogStateMachine.ChangeState(new FetchBall(ball.transform));
     }
 
     // Update is called once per frame
